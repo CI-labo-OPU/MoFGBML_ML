@@ -1,16 +1,13 @@
 package fuzzy;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 
-import data.DataSetInfo;
 import data.MultiDataSetInfo;
 import data.Pattern;
 import data.SingleDataSetInfo;
-import fuzzy.fml.KB;
 import main.Consts;
 import method.MersenneTwisterFast;
 
@@ -21,91 +18,45 @@ import method.MersenneTwisterFast;
 
 public class StaticFuzzyFunc {
 	// ************************************************************
-	public static KB kb;
+	static int KK[] = {1,2,2,3,3,3,4,4,4,4,5,5,5,5,5,6,6,6,6,6,6,7,7,7,7,7,7,7};
+	static int kk[] = {1,1,2,1,2,3,1,2,3,4,1,2,3,4,5,1,2,3,4,5,6,1,2,3,4,5,6,7};
+
 
 	// ************************************************************
 
 	// ************************************************************
 
-	public static void outputFML(String fileName) {
-		kb.outputFML(fileName);
-	}
-
-	@SuppressWarnings("rawtypes")
-	public static void initFuzzy(DataSetInfo Dtra) {
-		if(Consts.FUZZY_SET_INITIALIZE == 0) {
-			homogeneousInit(Dtra.getNdim());
-		} else if(Consts.FUZZY_SET_INITIALIZE == 1) {
-			//Input FML file
-			String sep = File.separator;
-			String fileName = System.getProperty("user.dir") + sep + "dataset" + sep + Consts.XML_FILE;
-			initFML(fileName);
-		} else if(Consts.FUZZY_SET_INITIALIZE == 2) {
-			//Inhomogeneous
-			classEntropyInit((SingleDataSetInfo)Dtra, Consts.PARTITION_NUM, Consts.FUZZY_GRADE);
-		}
-	}
-
-	public static void classEntropyInit(SingleDataSetInfo tra, int K, double F) {
-		kb = new KB();
-		kb.classEntropyInit(tra, K, F);
-	}
-
-	//Initialize Fuzzy Set (small, medium, large)
-	public static void threeTriangle(int Ndim) {
-		kb = new KB();
-		kb.threeTriangle(Ndim);
-	}
-
 	/**
-	 * <h1>Initialize Fuzzy Set - ファジィ集合初期化</h1><br>
-	 * 2-5分割の等分割三角型ファジィ集合 + Don't Careの15種を全attributeに定義<br>
-	 * <br>
-	 * @param Ndim
+	 * <h1>Membership Function</h1>
 	 */
-	public static void homogeneousInit(int Ndim) {
-		kb = new KB();
-		kb.homogeneousInit(Ndim);
-	}
-
-	/**
-	 * <h1>与えられたparamsからファジィ集合を定義する．</h1>
-	 * @param Ndim
-	 * @param _params
-	 */
-	public static void paramInit(int Ndim, float[][] _params) {
-		kb = new KB();
-		kb.paramInit(Ndim, _params);
-	}
-
-	/**
-	 * Initialize Fuzzy Set with XML file <br>
-	 * @param fileName String : XML File
-	 */
-	public static void initFML(String fileName) {
-		kb = new KB();
-		kb.inputFML(fileName);
-	}
-
 	public static double calcMembership(int attribute, int fuzzySet, double x) {
-		double ans;
-		if(fuzzySet < 0) {
-			//Categorical Dimension
-			if((int)x == fuzzySet) {//Singleton Membership Function
+		double ans = 0.0;
+
+		if(fuzzySet == 0) {//Don't Care
+			ans = 1.0;
+		}
+		else if(fuzzySet < 0) {//Nominal
+			if(fuzzySet == x) {
 				ans = 1.0;
-			} else {
+			}
+			else {
 				ans = 0.0;
 			}
 		}
-		else if(fuzzySet == 0) {	//Don't Care
-			ans = 1.0;
+		else if(fuzzySet > 0) {//Numeric
+			double a = (double)(kk[fuzzySet]-1) / (double)(KK[fuzzySet]-1);
+			double b = 1.0 / (double)(KK[fuzzySet]-1);
+
+			ans = 1.0 - ( Math.abs(x - a) / b );
+
+			if(ans < 0.0){
+				ans = 0.0;
+			}
 		}
-		else {
-			//Numerical Dimension
-			ans = kb.calcMembership(attribute, fuzzySet, x);
-		}
+
 		return ans;
 	}
+
 
 	/**
 	 * <h1>適合度</h1><br>

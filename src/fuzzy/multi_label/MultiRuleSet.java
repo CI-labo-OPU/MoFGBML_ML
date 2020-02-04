@@ -12,7 +12,6 @@ import data.MultiDataSetInfo;
 import data.MultiPattern;
 import data.Pattern;
 import fuzzy.RuleSet;
-import main.Consts;
 import main.Setting;
 
 public class MultiRuleSet extends RuleSet<MultiRule>{
@@ -66,10 +65,10 @@ public class MultiRuleSet extends RuleSet<MultiRule>{
 	public int[] classifyParallel(Pattern pattern, boolean doMemorizeMissPatterns) {
 		int[] answerClass = null;
 
-		if(Consts.MULTI_CF_TYPE == 0) {
+		if(Setting.CFtype == 0) {
 			answerClass = cfMeanClassifyParallel(pattern, doMemorizeMissPatterns);
 		}
-		else if(Consts.MULTI_CF_TYPE == 1) {
+		else if(Setting.CFtype == 1) {
 			answerClass = cfVectorClassifyParallel(pattern, doMemorizeMissPatterns);
 		}
 
@@ -247,10 +246,10 @@ public class MultiRuleSet extends RuleSet<MultiRule>{
 	public int[] classify(Pattern pattern, boolean doMemorizeMissPatterns) {
 		int[] answerClass = null;
 
-		if(Consts.MULTI_CF_TYPE == 0) {
+		if(Setting.CFtype == 0) {
 			answerClass = cfMeanClassify(pattern, doMemorizeMissPatterns);
 		}
-		else if(Consts.MULTI_CF_TYPE == 1) {
+		else if(Setting.CFtype == 1) {
 			answerClass = cfVectorClassify(pattern, doMemorizeMissPatterns);
 		}
 

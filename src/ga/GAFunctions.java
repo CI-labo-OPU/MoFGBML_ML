@@ -311,7 +311,7 @@ public class GAFunctions {
 				if(randPattern >= 0.0) {
 					//Attribute i is Numerical
 					list.clear();
-					int fuzzySetNum = StaticFuzzyFunc.kb.getFSs(i).length;	//Including "don't care"
+					int fuzzySetNum = Consts.FUZZY_SET_NUM;	//Including "don't care"
 					//make list
 					for(int j = 0; j < fuzzySetNum; j++) {
 						if(j != gene[i]) {
@@ -355,7 +355,7 @@ public class GAFunctions {
 					//Attribute mutationDim is Numeric.
 
 					//#of Defined Fuzzy Sets at mutationDim
-					int fuzzySetNum = StaticFuzzyFunc.kb.getFSs(mutationDim).length;
+					int fuzzySetNum = Consts.FUZZY_SET_NUM;
 					//make List
 					list.clear();
 					for(int j = 0; j < fuzzySetNum; j++) {
