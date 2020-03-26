@@ -1,5 +1,14 @@
 # MoFGBML_ML
 
+---
+
+## Reference
+
+Y. Omozaki, N. Masuyama, Y. Nojima, and H. Ishibuchi, "Multiobjective Fuzzy Genetics-Based Machine Learning for Multi-Label Classification," in _Proceedings of IEEE WCCI2020 (FUZZ-IEEE2020)_.
+
+---
+
+
 This project is a source-code, which is a fuzzy rule-based classification system for Multi-Label Classification.
 We implemented a multiobjective fuzzy genetics-based machine learning for multi-label classification.
 The source-codes is placed in "src" directory.
